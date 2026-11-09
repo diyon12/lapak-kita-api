@@ -1,0 +1,263 @@
+/* =========================================================
+   LapakKita - gaya tambahan di atas Bootstrap 5
+   Palet: teal tua (tenda lapak) + kunyit (label harga)
+   ========================================================= */
+:root {
+    --lk-teal: #0e5e5a;
+    --lk-teal-tua: #0a4643;
+    --lk-teal-muda: #e3efed;
+    --lk-kunyit: #e3a01b;
+    --lk-kunyit-muda: #fcf1d9;
+    --lk-tinta: #17302e;
+    --lk-redup: #5e706e;
+    --lk-garis: #dde4e2;
+    --lk-latar: #f4f6f5;
+
+    --bs-body-font-family: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --bs-body-color: var(--lk-tinta);
+    --bs-body-bg: var(--lk-latar);
+    --bs-primary: var(--lk-teal);
+    --bs-primary-rgb: 14, 94, 90;
+    --bs-link-color: var(--lk-teal);
+    --bs-link-color-rgb: 14, 94, 90;
+    --bs-link-hover-color: var(--lk-teal-tua);
+    --bs-link-hover-color-rgb: 10, 70, 67;
+    --bs-border-color: var(--lk-garis);
+    --bs-secondary-color: var(--lk-redup);
+    --bs-border-radius: .625rem;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+h1, h2, h3, .h1, .h2, .h3 {
+    font-weight: 700;
+    letter-spacing: -0.015em;
+}
+
+/* ---------- Tenda lapak: pita bergaris di puncak halaman ---------- */
+.tenda {
+    height: 12px;
+    background: repeating-linear-gradient(90deg,
+        var(--lk-teal) 0 28px,
+        var(--lk-kunyit) 28px 56px);
+    -webkit-mask: radial-gradient(14px 12px at 14px 0, #000 98%, transparent) 0 0 / 28px 12px repeat-x;
+            mask: radial-gradient(14px 12px at 14px 0, #000 98%, transparent) 0 0 / 28px 12px repeat-x;
+    background-color: var(--lk-teal);
+}
+
+/* ---------- Navbar ---------- */
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-weight: 800;
+    color: var(--lk-teal);
+    letter-spacing: -0.02em;
+}
+.navbar-brand:hover { color: var(--lk-teal-tua); }
+.brand-mark {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: .5rem;
+    background: var(--lk-teal);
+    color: #fff;
+    font-size: 1rem;
+}
+.nav-link { font-weight: 500; color: var(--lk-tinta); }
+.nav-link.active, .nav-link:hover { color: var(--lk-teal) !important; }
+.badge-keranjang {
+    position: absolute;
+    top: .1rem;
+    left: 1.35rem;
+    background: var(--lk-kunyit);
+    color: var(--lk-tinta);
+    font-size: .7rem;
+}
+
+/* ---------- Tombol ---------- */
+.btn-primary {
+    --bs-btn-bg: var(--lk-teal);
+    --bs-btn-border-color: var(--lk-teal);
+    --bs-btn-hover-bg: var(--lk-teal-tua);
+    --bs-btn-hover-border-color: var(--lk-teal-tua);
+    --bs-btn-active-bg: var(--lk-teal-tua);
+    --bs-btn-active-border-color: var(--lk-teal-tua);
+    --bs-btn-disabled-bg: #8fb3b0;
+    --bs-btn-disabled-border-color: #8fb3b0;
+    font-weight: 600;
+}
+.btn-outline-primary {
+    --bs-btn-color: var(--lk-teal);
+    --bs-btn-border-color: var(--lk-teal);
+    --bs-btn-hover-bg: var(--lk-teal);
+    --bs-btn-hover-border-color: var(--lk-teal);
+    --bs-btn-active-bg: var(--lk-teal-tua);
+    --bs-btn-active-border-color: var(--lk-teal-tua);
+    font-weight: 600;
+}
+.btn-kunyit {
+    --bs-btn-bg: var(--lk-kunyit);
+    --bs-btn-border-color: var(--lk-kunyit);
+    --bs-btn-color: var(--lk-tinta);
+    --bs-btn-hover-bg: #cf8f12;
+    --bs-btn-hover-border-color: #cf8f12;
+    --bs-btn-hover-color: var(--lk-tinta);
+    --bs-btn-active-bg: #b97f0f;
+    --bs-btn-active-border-color: #b97f0f;
+    font-weight: 700;
+}
+.form-control:focus, .form-select:focus, .btn:focus-visible {
+    border-color: var(--lk-teal);
+    box-shadow: 0 0 0 .2rem rgba(14, 94, 90, .2);
+}
+
+/* ---------- Kepala halaman daftar produk ---------- */
+.kepala-beranda h1 { font-size: clamp(1.6rem, 2.6vw, 2.25rem); max-width: 22ch; }
+.kepala-beranda p { max-width: 60ch; }
+.filter-kategori {
+    display: flex;
+    gap: .5rem;
+    overflow-x: auto;
+    padding-bottom: .25rem;
+    scrollbar-width: thin;
+}
+.filter-kategori .btn {
+    white-space: nowrap;
+    border-radius: 999px;
+    font-weight: 500;
+    --bs-btn-padding-x: .9rem;
+}
+
+/* ---------- Kartu produk ---------- */
+.kartu-produk {
+    background: #fff;
+    border: 1px solid var(--lk-garis);
+    border-radius: .75rem;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: border-color .15s ease;
+}
+.kartu-produk:hover, .kartu-produk:focus-within { border-color: var(--lk-teal); }
+.kartu-produk .isi { padding: .9rem 1rem 1rem; display: flex; flex-direction: column; gap: .35rem; flex: 1; }
+.kartu-produk .nama {
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--lk-tinta);
+    text-decoration: none;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.kartu-produk .nama::after { content: ""; position: absolute; inset: 0; } /* seluruh kartu dapat diklik */
+.kartu-produk { position: relative; }
+.kartu-produk .toko { font-size: .825rem; color: var(--lk-redup); }
+
+.produk-foto {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    background: var(--lk-teal-muda);
+}
+.produk-foto-kosong {
+    display: grid;
+    place-items: center;
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+}
+.nada-1 { background: #e3efed; color: #2f7f79; }
+.nada-2 { background: #fcf1d9; color: #b27a0d; }
+.nada-3 { background: #e8ecf6; color: #4a5f9c; }
+.nada-4 { background: #f6e6e1; color: #a2533c; }
+.nada-5 { background: #ecf1e2; color: #5c7a2c; }
+
+/* Label harga berbentuk label pasar */
+.label-harga {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    align-self: flex-start;
+    padding: .2rem .65rem .2rem .55rem;
+    background: var(--lk-kunyit-muda);
+    color: var(--lk-tinta);
+    font-weight: 800;
+    border-radius: .35rem .9rem .9rem .35rem;
+    font-variant-numeric: tabular-nums;
+}
+.label-harga::before {
+    content: "";
+    width: .4rem;
+    height: .4rem;
+    border-radius: 50%;
+    background: var(--lk-kunyit);
+}
+.label-harga.besar { font-size: 1.6rem; padding: .35rem 1rem .35rem .8rem; }
+.label-harga.besar::before { width: .55rem; height: .55rem; }
+
+.tanda-stok { font-size: .8rem; color: var(--lk-redup); }
+.tanda-stok.habis { color: #a2533c; font-weight: 600; }
+.pita-habis {
+    position: absolute;
+    top: .75rem;
+    left: .75rem;
+    background: var(--lk-tinta);
+    color: #fff;
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .2rem .6rem;
+    border-radius: 999px;
+}
+
+/* ---------- Panel umum ---------- */
+.panel {
+    background: #fff;
+    border: 1px solid var(--lk-garis);
+    border-radius: .75rem;
+    padding: 1.25rem;
+}
+@media (min-width: 992px) { .panel { padding: 1.75rem; } }
+
+.foto-detail { border-radius: .75rem; overflow: hidden; border: 1px solid var(--lk-garis); }
+.deskripsi { white-space: pre-line; line-height: 1.7; max-width: 65ch; }
+
+.thumb-kecil { width: 64px; flex-shrink: 0; border-radius: .5rem; overflow: hidden; }
+.thumb-kecil .produk-foto-kosong { font-size: 1.5rem; }
+
+.input-jumlah { width: 5.5rem; }
+
+.ringkasan { position: sticky; top: 6rem; }
+
+.keadaan-kosong {
+    text-align: center;
+    padding: 3.5rem 1rem;
+}
+.keadaan-kosong .bi { font-size: 2.75rem; color: var(--lk-teal); }
+
+.table > :not(caption) > * > * { padding: .85rem .75rem; }
+.table thead th { font-size: .8rem; font-weight: 600; color: var(--lk-redup); background: #fafbfb; }
+
+.kartu-auth { max-width: 440px; margin-inline: auto; }
+
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+}
+
+/* ---------- Tahapan status pesanan (pembeli) ---------- */
+.tahapan-status li {
+    padding: .35rem .8rem;
+    border-radius: 999px;
+    border: 1px solid var(--lk-garis);
+    font-size: .875rem;
+    color: var(--lk-redup);
+    background: #fff;
+}
+.tahapan-status li.lewat { color: var(--lk-teal); border-color: var(--lk-teal-muda); background: var(--lk-teal-muda); }
+.tahapan-status li.kini { color: #fff; border-color: var(--lk-teal); background: var(--lk-teal); font-weight: 600; }

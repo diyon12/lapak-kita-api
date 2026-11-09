@@ -1,0 +1,8 @@
+Options -Indexes
+
+# Teruskan header Authorization (Basic Auth) ke PHP pada konfigurasi Apache tertentu
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>

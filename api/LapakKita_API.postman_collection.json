@@ -1,0 +1,698 @@
+{
+  "info": {
+    "name": "LapakKita REST API",
+    "description": "Pengujian REST API marketplace LapakKita di XAMPP. Ubah variabel base_url jika folder proyek Anda bukan 'marketplace'. Jalankan berurutan (Collection Runner) agar variabel id_pesanan terisi oleh request 9.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Produk dan kategori (publik)",
+      "item": [
+        {
+          "name": "1. Daftar seluruh produk",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/produk.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "produk.php"
+              ]
+            },
+            "description": "Menampilkan seluruh produk dari tabel produk.",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "const j = pm.response.json();",
+                  "pm.test('status = success', () => pm.expect(j.status).to.eql('success'));",
+                  "pm.test('data berupa array dan jumlah sesuai', () => { pm.expect(j.data).to.be.an('array'); pm.expect(j.data.length).to.eql(j.jumlah); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "2. Cari produk (q=kopi)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/produk.php?q=kopi",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "produk.php"
+              ],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "kopi"
+                }
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Semua hasil mengandung kata kopi', () => pm.response.json().data.forEach(p => pm.expect(p.nama_produk.toLowerCase()).to.include('kopi')));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "3. Produk per kategori (kategori=1)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/produk.php?kategori=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "produk.php"
+              ],
+              "query": [
+                {
+                  "key": "kategori",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Semua produk berkategori 1', () => pm.response.json().data.forEach(p => pm.expect(p.kategori.id_kategori).to.eql(1)));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "4. Detail produk (id=1)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/produk.php?id=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "produk.php"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "const d = pm.response.json().data;",
+                  "pm.test('id_produk = 1', () => pm.expect(d.id_produk).to.eql(1));",
+                  "pm.test('Ada deskripsi dan data penjual', () => { pm.expect(d).to.have.property('deskripsi'); pm.expect(d.penjual).to.have.property('nama_toko'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "5. Detail produk tidak ada (id=999)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/produk.php?id=999",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "produk.php"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "999"
+                }
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 404 Not Found', () => pm.response.to.have.status(404));",
+                  "pm.test('status = error', () => pm.expect(pm.response.json().status).to.eql('error'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "6. Detail produk id tidak valid (id=abc)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/produk.php?id=abc",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "produk.php"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "abc"
+                }
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 400 Bad Request', () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "7. Daftar kategori",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/kategori.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "kategori.php"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Setiap kategori punya jumlah_produk', () => pm.response.json().data.forEach(k => pm.expect(k.jumlah_produk).to.be.a('number')));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "8. Metode tidak didukung (DELETE produk)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/produk.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "produk.php"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 405 Method Not Allowed', () => pm.response.to.have.status(405));",
+                  "pm.test('Header Allow = GET', () => pm.expect(pm.response.headers.get('Allow')).to.eql('GET'));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Pesanan (Basic Auth pembeli)",
+      "item": [
+        {
+          "name": "9. Buat pesanan (2 toko)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/pesanan.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pesanan.php"
+              ]
+            },
+            "description": "Membuat pesanan baru. Kopi (Dapur Bu Sari) dan Earphone (Toko Sinar Jaya) menjadi 2 pesanan.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nama_penerima\": \"Budi Santoso\",\n    \"no_hp\": \"081234567803\",\n    \"alamat_kirim\": \"Jl. Melati No. 21, Kota Bengkulu\",\n    \"metode_bayar\": \"cod\",\n    \"catatan\": \"Pesanan dari Postman\",\n    \"items\": [\n        {\n            \"id_produk\": 7,\n            \"jumlah\": 2\n        },\n        {\n            \"id_produk\": 1,\n            \"jumlah\": 1\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{email_pembeli}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password_pembeli}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 201 Created', () => pm.response.to.have.status(201));",
+                  "const j = pm.response.json();",
+                  "pm.test('Dipecah menjadi 2 pesanan (satu per toko)', () => pm.expect(j.data.length).to.eql(2));",
+                  "pm.test('Status awal menunggu', () => j.data.forEach(p => pm.expect(p.status).to.eql('menunggu')));",
+                  "pm.collectionVariables.set('id_pesanan', j.data[0].id_pesanan);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "10. Buat pesanan - stok tidak cukup",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/pesanan.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pesanan.php"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nama_penerima\": \"Budi Santoso\",\n    \"no_hp\": \"081234567803\",\n    \"alamat_kirim\": \"Jl. Melati No. 21, Kota Bengkulu\",\n    \"metode_bayar\": \"cod\",\n    \"catatan\": \"Pesanan dari Postman\",\n    \"items\": [\n        {\n            \"id_produk\": 9,\n            \"jumlah\": 99\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{email_pembeli}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password_pembeli}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 409 Conflict', () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "11. Buat pesanan - data tidak valid",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/pesanan.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pesanan.php"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nama_penerima\": \"\",\n    \"no_hp\": \"abc\",\n    \"alamat_kirim\": \"pendek\",\n    \"metode_bayar\": \"kredit\",\n    \"items\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{email_pembeli}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password_pembeli}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 422 Unprocessable Entity', () => pm.response.to.have.status(422));",
+                  "pm.test('Ada daftar error per kolom', () => pm.expect(pm.response.json().errors).to.have.property('no_hp'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "12. Buat pesanan - tanpa autentikasi",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/pesanan.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pesanan.php"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nama_penerima\": \"Budi Santoso\",\n    \"no_hp\": \"081234567803\",\n    \"alamat_kirim\": \"Jl. Melati No. 21, Kota Bengkulu\",\n    \"metode_bayar\": \"cod\",\n    \"catatan\": \"Pesanan dari Postman\",\n    \"items\": [\n        {\n            \"id_produk\": 7,\n            \"jumlah\": 1\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 401 Unauthorized', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "13. Buat pesanan - akun penjual",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/pesanan.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pesanan.php"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nama_penerima\": \"Budi Santoso\",\n    \"no_hp\": \"081234567803\",\n    \"alamat_kirim\": \"Jl. Melati No. 21, Kota Bengkulu\",\n    \"metode_bayar\": \"cod\",\n    \"catatan\": \"Pesanan dari Postman\",\n    \"items\": [\n        {\n            \"id_produk\": 7,\n            \"jumlah\": 1\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "penjual@demo.com",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "penjual123",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 403 Forbidden', () => pm.response.to.have.status(403));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "14. Daftar pesanan saya",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/pesanan.php",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pesanan.php"
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{email_pembeli}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password_pembeli}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('Memuat pesanan dari request 9', () => pm.expect(pm.response.json().data.map(p => p.id_pesanan)).to.include(Number(pm.collectionVariables.get('id_pesanan'))));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "15. Detail pesanan",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/pesanan.php?id={{id_pesanan}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "pesanan.php"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "{{id_pesanan}}"
+                }
+              ]
+            },
+            "description": "",
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{email_pembeli}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{password_pembeli}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status 200 OK', () => pm.response.to.have.status(200));",
+                  "pm.test('id_pesanan sesuai', () => pm.expect(pm.response.json().data.id_pesanan).to.eql(Number(pm.collectionVariables.get('id_pesanan'))));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost/marketplace/api"
+    },
+    {
+      "key": "email_pembeli",
+      "value": "pembeli@demo.com"
+    },
+    {
+      "key": "password_pembeli",
+      "value": "pembeli123"
+    },
+    {
+      "key": "id_pesanan",
+      "value": ""
+    }
+  ]
+}

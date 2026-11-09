@@ -1,0 +1,7 @@
+# Matikan daftar isi folder
+Options -Indexes
+
+# Lindungi file konfigurasi dan file tersembunyi
+<FilesMatch "^(config\.php|config\.example\.php|\.gitignore|README\.md)$">
+    Require all denied
+</FilesMatch>

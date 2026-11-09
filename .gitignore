@@ -1,0 +1,14 @@
+# Kredensial database - JANGAN diunggah ke repository publik
+config.php
+
+# Gambar produk yang diunggah pengguna
+uploads/*
+!uploads/.gitkeep
+!uploads/.htaccess
+
+# File sistem / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
